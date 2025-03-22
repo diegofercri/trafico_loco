@@ -1,6 +1,5 @@
-# XVIII OLIMPIADA INFORMÁTICA
-## CICLOS FORMATIVOS - PRUEBA PRÁCTICA
-### SIMULACIÓN DE TRÁFICO CON COCHES AUTÓNOMOS
+# Enunciado 18º Olimpiada Informática
+## Simulación de tráfico con coches autónomos
 
 Trabajas para una empresa de coches autónomos y te han encargado desarrollar, utilizando el paradigma de la orientación a objetos, un simulador de carreteras con cruces para implementar una nueva funcionalidad en la que los coches autónomos deberán cederse el paso unos a otros para evitar colisiones.
 
@@ -106,4 +105,9 @@ A continuación, se muestran ejemplos de algunos de los escenarios descritos ant
 ## Entregables
 
 - Breve documentación con todas las decisiones de diseño y las explicaciones que consideréis necesarias para una mejor comprensión de la solución, así como un sencillo manual de uso y puesta en marcha.
-- Código fuente en Java, C++ o C# necesario para reproducir el ejercicio. Y también cualquier instrucción o particularidad que necesitemos saber para generar el ejecutable correspondiente.  
+- Código fuente en Java, C++ o C# necesario para reproducir el ejercicio. Y también cualquier instrucción o particularidad que necesitemos saber para generar el ejecutable correspondiente.
+
+---
+
+# Resolución del problema
+
