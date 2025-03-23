@@ -1,100 +1,121 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class Modelo {
 
-    private Carretera[] carreteras;
+    private Carretera[] carreterasClass;
 
     private ArrayList<Cruce> cruces;
 
     private int tamano;
+    //private HashMap hash;
+    String[][] pintar;
+    public void pintarCarreteras(){
+
+        for (int i = 0; i <carreterasClass.length ; i++) {
+            Position[] currcarretera = carreterasClass[i].getPosiciones();
+
+            for (int j = 0; j <currcarretera.length ; j++) {
+                 pintar[currcarretera[j].getX()][currcarretera[j].getY()] = "#";
+            }
+            for (String[] strings : pintar) {
+                System.out.println();
+                for (String string : strings) {
+                    System.out.print(string);
+
+                }
+
+        }
+
+        }
+
+    }
 
     public Modelo(int tamano) {
         this.tamano = tamano;
-        carreteras = new Carretera[tamano / 2];
+        carreterasClass = new Carretera[tamano / 2];
         cruces = new ArrayList<>(tamano / 2);
+        pintar = new String[15][15];
+        for(String[] row : pintar) {
+            Arrays.fill(row, " ");
+        }
+        //hash = new HashMap<Integer, String>(10); para q lo pase manu a hasmap
         // generarCarreteras();
     }
 
     public void generarCarreteras() {
-        LinkedList<Carretera> carreterasVerticales = new LinkedList<>();
-        LinkedList<Carretera> carreterasHorizontales = new LinkedList<>();
+        LinkedList<Carretera> carreteras = new LinkedList<>();
         LinkedList<Integer> yOcupadas = new LinkedList<>();
         LinkedList<Integer> xOcupadas = new LinkedList<>();
         for (int i = 0; i < tamano / 2; i++) {
             Carretera carretera = new Carretera();
             boolean esVertical = i % 2 == 0;
+            System.out.println(esVertical);
             carretera.setId(i);
             Random random = new Random(System.currentTimeMillis());
             int xInicial = random.nextInt(1, tamano/2 - 1);
             int yInicial = random.nextInt(1, tamano/2 - 1);
             int longitudCarretera;
-            if (esVertical) 
+            if (esVertical)
                 longitudCarretera = random.nextInt(3, tamano - 1 - yInicial);
             else
                 longitudCarretera = random.nextInt(3, tamano - 1 - xInicial);
             Position posicionInicial;
+
             if (i == 0) {
                 posicionInicial = new Position(xInicial, yInicial);
-            } else {
+
+            }
+            else {
                 boolean estaEnMismaFilaOColumna = true;
                 do {
-                    Carretera carreteraRandom; 
+                    Carretera carreteraRandom;
                     int indexCarreteraRandom;
-                    if (esVertical) {
-                        indexCarreteraRandom = random.nextInt(carreterasHorizontales.size());
-                        carreteraRandom = carreterasHorizontales.get(indexCarreteraRandom);
-                    }
-                    else {
-                        indexCarreteraRandom = random.nextInt(carreterasVerticales.size());
-                        carreteraRandom = carreterasVerticales.get(indexCarreteraRandom);
-                    }
 
+                    indexCarreteraRandom = i-1;
+                    carreteraRandom = carreteras.get(indexCarreteraRandom);
                     Position[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
-                    if (esVertical) {
-                        boolean estaEnVerticalOcupada = false;
-                        for (int y: yOcupadas) {
-                            if (posicionInicial.getY() == y)
-                                estaEnVerticalOcupada = true;
-                        }
-                        if (!estaEnVerticalOcupada)
+                    for (int j = 0; j <cruces.size() ; j++) {
+                        if (!posicionInicial.equals(cruces.get(j).getPosicion())&&!xOcupadas.contains(posicionInicial.getX())) {
                             estaEnMismaFilaOColumna = false;
-                    } else {
-                        boolean estaEnHorizontalOcupada = false;
-                        for (int x: xOcupadas) {
-                            if (posicionInicial.getX() == x)
-                                estaEnHorizontalOcupada = true;
+                            break;
                         }
-                        if (!estaEnHorizontalOcupada)
-                            estaEnMismaFilaOColumna = false;
+
                     }
+
+
+                    xInicial = posicionInicial.getX();
+                    yInicial = posicionInicial.getY();
+
+
                 } while (estaEnMismaFilaOColumna);
             }
+
             int xFinal;
             int yFinal;
             if (esVertical) {
                 carretera.setDireccion(Direccion.VERTICAL);
                 xFinal = xInicial;
+               //System.out.println("La x inicial en el if" + xInicial);
                 yFinal = yInicial + longitudCarretera - 1;
-                carreterasVerticales.add(carretera);
-                yOcupadas.add(posicionInicial.getY());
+                yOcupadas.add(yInicial);
             } else {
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
+                //System.out.println("La y inicial en el else" + yInicial);
                 xFinal = xInicial + longitudCarretera - 1;
-                carreterasHorizontales.add(carretera);
-                xOcupadas.add(posicionInicial.getX());
+                xOcupadas.add(xInicial);
             }
-
+            carreteras.add(carretera);
             Position posicionFinal = new Position(xFinal, yFinal);
+            System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
+            System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
-            carreteras[i] = carretera;
+            cruces.add(new Cruce(new Position(xInicial, yInicial)));
+            carreterasClass[i] = carretera;
         }
 
         for (Carretera carretera : carreteras) {
@@ -103,11 +124,11 @@ public class Modelo {
     }
 
     public Carretera[] getCarreteras() {
-        return carreteras;
+        return carreterasClass;
     }
 
     public void setCarreteras(Carretera[] carreteras) {
-        this.carreteras = carreteras;
+        this.carreterasClass = carreteras;
     }
 
     public ArrayList<Cruce> getCruces() {

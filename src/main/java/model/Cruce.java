@@ -2,13 +2,20 @@ package model;
 
 public class Cruce {
 
-    private Carretera carreteraVertical;
-    private Carretera carreteraHorizontal;
+
     private Position posicion;
 
-    public Cruce(Carretera carreteraVertical, Carretera carreteraHorizontal, Position posicion) {
-        this.carreteraVertical = carreteraVertical;
-        this.carreteraHorizontal = carreteraHorizontal;
+    public Cruce( Position posicion) {
+
         this.posicion = posicion;
+    }
+    public int getX(){
+        return posicion.getX();
+    }
+    public int getY(){
+        return posicion.getY();
+    }
+    public Position getPosicion(){
+        return posicion;
     }
 }
