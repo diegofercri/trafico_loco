@@ -85,7 +85,6 @@ public class Modelo {
                 do {
                     Carretera carreteraRandom;
                     int indexCarreteraRandom;
-                    if
                     indexCarreteraRandom = random.nextInt(carreteras.size()); //ESTO ES SOSPECHOSO
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
