@@ -100,9 +100,10 @@ public class Modelo {
                 do {
                     Carretera carreteraRandom; // Carretera seleccionada aleatoriamente como referencia.
                     int indexCarreteraRandom;
-
+                  
                     // Selecciona una carretera aleatoria de las ya generadas.
-                    indexCarreteraRandom = random.nextInt(0, carreteras.size());
+                    indexCarreteraRandom = random.nextInt(carreteras.size()); //ESTO ES SOSPECHOSO
+                  
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
 
                     // Obtiene las posiciones de la carretera seleccionada.
@@ -110,22 +111,10 @@ public class Modelo {
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
 
-                    // Verifica si la carretera es vertical u horizontal para aplicar restricciones específicas.
-                    if (esVertical) {
-                        for (int j = 0; j < cruces.size(); j++) {
-                            // Asegura que la posición inicial no coincida con un cruce existente ni con una columna ocupada.
-                            if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !xOcupadas.contains(posicionInicial.getX())) {
-                                estaEnMismaFilaOColumna = false;
-                                break;
-                            }
-                        }
-                    } else {
-                        for (int j = 0; j < cruces.size(); j++) {
-                            // Asegura que la posición inicial no coincida con un cruce existente ni con una fila ocupada.
-                            if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !yOcupadas.contains(posicionInicial.getY())) {
-                                estaEnMismaFilaOColumna = false;
-                                break;
-                            }
+                    for (int j = 0; j < cruces.size(); j++) {
+                        if (!xOcupadas.contains(posicionInicial.getX())) {
+                            estaEnMismaFilaOColumna = false;
+                            break;
                         }
                     }
 
@@ -167,9 +156,7 @@ public class Modelo {
 
             // Crea un nuevo cruce en la posición inicial de la carretera.
             cruces.add(new Cruce(new Posicion(xInicial, yInicial)));
-
-            // Guarda la carretera en el arreglo `carreterasClass`.
-            carreteras.set(i, carretera);
+            carreteras.add(carretera);
         }
 
         // Imprime todas las carreteras generadas para depuración.

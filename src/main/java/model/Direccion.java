@@ -7,6 +7,6 @@ package model;
  * - HORIZONTAL: Indica que la carretera se extiende horizontalmente.
  */
 public enum Direccion {
-    VERTICAL,   // Dirección vertical (coordenada X constante)
+    VERTICAL,   // Dirección vertical (coordenada X constante) 
     HORIZONTAL  // Dirección horizontal (coordenada Y constante)
 }
