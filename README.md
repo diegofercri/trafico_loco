@@ -109,4 +109,150 @@ A continuación, se muestran ejemplos de algunos de los escenarios descritos ant
 
 ---
 
-# Resolución del problema
+# Documentación del Proyecto
+
+## Introducción
+Este proyecto implementa un simulador de tráfico basado en el paradigma de orientación a objetos. El objetivo es simular un mapa virtual de carreteras con cruces y vehículos autónomos que se mueven siguiendo reglas básicas de tráfico para evitar colisiones.
+
+El simulador permite:
+- Generar un mapa de carreteras con diferentes tamaños.
+- Representar vehículos en movimiento hacia destinos específicos.
+- Simular cruces y resolver conflictos para garantizar un flujo de tráfico seguro.
+
+---
+
+## Estructura del Código
+
+### 1. Clase `Modelo`
+- **Propósito:** Gestiona la generación de carreteras, cruces y la representación visual del mapa.
+- **Funcionalidades principales:**
+   - Genera carreteras alternando entre direcciones verticales y horizontales.
+   - Detecta y almacena los cruces entre carreteras.
+   - Proporciona métodos para "pintar" las carreteras en una matriz visual (`pintarCarreteras`).
+- **Propiedades:**
+   - `carreterasClass`: Array que almacena las carreteras generadas.
+   - `cruces`: Lista que almacena los cruces generados.
+   - `tamano`: Tamaño del mapa (20x20, 30x30, etc.).
+   - `pintar`: Matriz utilizada para representar visualmente el mapa.
+- **Métodos principales:**
+   - `generarCarreteras()`: Genera las carreteras y los cruces en el mapa.
+   - `pintarCarreteras()`: Imprime el mapa en la consola marcando las posiciones ocupadas por carreteras.
+- **Observaciones:**
+   - La matriz `pintar` tiene un tamaño fijo (`15x15`), lo que puede causar problemas si el tamaño del mapa es mayor.
+   - La lógica para evitar cruces duplicados podría mejorarse.
+
+---
+
+### 2. Clase `Carretera`
+- **Propósito:** Representa una carretera en el mapa, con sus posiciones, dirección y cruces asociados.
+- **Funcionalidades principales:**
+   - Almacena las posiciones inicial, final e intermedias de la carretera.
+   - Calcula las posiciones intermedias basándose en la dirección (vertical u horizontal).
+- **Propiedades:**
+   - `id`: Identificador único de la carretera.
+   - `posiciones`: Array que almacena las posiciones que conforman la carretera.
+   - `cruces`: Array que almacena los cruces asociados a la carretera.
+   - `direccion`: Dirección de la carretera (`VERTICAL` o `HORIZONTAL`).
+- **Métodos principales:**
+   - `setPosiciones(Position posicionInicial, Position posicionFinal)`: Genera las posiciones intermedias de la carretera.
+- **Observaciones:**
+   - Falta validación para asegurarse de que las posiciones inicial y final sean coherentes con la dirección.
+
+---
+
+### 3. Clase `Cruce`
+- **Propósito:** Representa un punto de intersección entre dos carreteras.
+- **Funcionalidades principales:**
+   - Almacena la posición del cruce.
+   - Proporciona métodos para acceder a las coordenadas (`getX`, `getY`) y a la posición completa (`getPosicion`).
+- **Propiedades:**
+   - `posicion`: Posición del cruce en el mapa.
+- **Observaciones:**
+   - No incluye lógica para gestionar prioridades entre vehículos en el cruce.
+
+---
+
+### 4. Clase `Coche`
+- **Propósito:** Representa un vehículo que se mueve por las carreteras hacia un destino.
+- **Funcionalidades principales:**
+   - Almacena la posición actual, la velocidad y el identificador del coche.
+   - Proporciona métodos para acceder y modificar sus propiedades (`id`, `position`, `velocidad`).
+- **Propiedades:**
+   - `id`: Identificador único del coche.
+   - `position`: Posición actual del coche en el mapa.
+   - `velocidad`: Velocidad del coche (número de casillas que se mueve por ciclo de simulación).
+- **Observaciones:**
+   - No incluye lógica para moverse ni para calcular su siguiente posición basándose en su destino.
+   - Falta validación para asegurarse de que la velocidad sea válida (1 o 2).
+
+---
+
+### 5. Clase `Position`
+- **Propósito:** Representa una posición en el mapa mediante coordenadas `(x, y)`.
+- **Funcionalidades principales:**
+   - Almacena las coordenadas `x` e `y`.
+   - Proporciona métodos para acceder y modificar las coordenadas (`getX`, `setX`, `getY`, `setY`).
+   - Sobrescribe el método `toString` para facilitar la impresión de posiciones.
+   - Sobrescribe el método `equals` para comparar posiciones.
+- **Observaciones:**
+   - Es una clase simple pero fundamental para representar ubicaciones en el mapa.
+
+---
+
+### 6. Enumerado `Direccion`
+- **Propósito:** Define las posibles direcciones de una carretera (`VERTICAL` o `HORIZONTAL`).
+- **Valores:**
+   - `VERTICAL`: Indica que la carretera se extiende verticalmente.
+   - `HORIZONTAL`: Indica que la carretera se extiende horizontalmente.
+- **Observaciones:**
+   - Proporciona valores predefinidos para garantizar consistencia en la dirección de las carreteras.
+
+---
+
+### 7. Clase `Simulador`
+- **Propósito:** Actúa como punto de entrada para la simulación.
+- **Funcionalidades principales:**
+   - Crea un modelo con un tamaño de mapa específico.
+   - Genera las carreteras y los cruces.
+   - Pinta las carreteras en la consola.
+- **Método principal:**
+   - `main(String[] args)`: Inicia la simulación creando un modelo, generando carreteras y pintando el mapa.
+- **Observaciones:**
+   - El tamaño del mapa está codificado directamente (`10x10`), lo que limita la flexibilidad.
+   - No incluye interacción con el usuario ni opciones para configurar el escenario.
+
+---
+
+## Interacción entre las Clases
+
+1. **Generación del mapa:**
+   - La clase `Simulador` crea un objeto `Modelo` y llama a sus métodos para generar carreteras y pintarlas.
+   - La clase `Modelo` utiliza objetos de tipo `Carretera` para representar las carreteras y objetos de tipo `Cruce` para representar los puntos de intersección.
+
+2. **Representación visual:**
+   - La matriz `pintar` en la clase `Modelo` se utiliza para representar visualmente el mapa en la consola. Las posiciones ocupadas por carreteras se marcan con el símbolo `#`.
+
+3. **Movimiento de vehículos (pendiente):**
+   - La clase `Coche` debería interactuar con las carreteras y los cruces para simular el movimiento de los vehículos. Esto aún no está implementado.
+
+---
+
+## TODOs
+
+1. **Generación de carreteras y cruces:**
+   - Validar que las carreteras no se superpongan ni ocupen las mismas filas/columnas.
+   - Mejorar la lógica para detectar y gestionar los cruces.
+
+2. **Movimiento de vehículos:**
+   - Implementar lógica para mover los coches hacia sus destinos.
+   - Gestionar prioridades en los cruces para evitar colisiones.
+
+3. **Interacción con el usuario:**
+   - Agregar un menú interactivo para permitir al usuario configurar el tamaño del mapa, el número de carreteras y el número de vehículos.
+
+4. **Visualización avanzada:**
+   - Usar una interfaz gráfica (por ejemplo, JavaFX o Swing) para representar el mapa y el movimiento de los vehículos.
+
+5. **Validaciones adicionales:**
+   - Asegurarse de que las posiciones inicial y final de las carreteras sean coherentes con su dirección.
+   - Validar que los vehículos no se salgan de las carreteras ni ocupen la misma posición simultáneamente.
