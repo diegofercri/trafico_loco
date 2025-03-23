@@ -88,7 +88,7 @@ public class Modelo {
                     Carretera carreteraRandom;
                     int indexCarreteraRandom;
 
-                    indexCarreteraRandom = i - 1;
+                    indexCarreteraRandom = random.nextInt(0, carreteras.size());
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
