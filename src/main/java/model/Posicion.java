@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Clase que representa una posición en el mapa mediante coordenadas (x, y).
  */
@@ -65,17 +67,20 @@ public class Posicion {
     /**
      * Compara esta posición con otra para determinar si son iguales.
      * Dos posiciones son iguales si tienen las mismas coordenadas X e Y.
-     * @param obj El objeto a comparar.
+     * @param  o objeto a comparar.
      * @return true si las posiciones son iguales, false en caso contrario.
      */
     @Override
-    public boolean equals(Object obj) {
-        // Si el objeto no es una instancia de Posicion, no pueden ser iguales
-        if (!(obj instanceof Posicion))
-            return false;
-
-        // Convierte el objeto a Posicion y compara las coordenadas
-        Posicion otraPosicion = (Posicion) obj;
-        return this.x == otraPosicion.getX() && this.y == otraPosicion.getY();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Posicion posicion = (Posicion) o;
+        return x == posicion.x && y == posicion.y;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
 }

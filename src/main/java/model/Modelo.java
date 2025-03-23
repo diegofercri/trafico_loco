@@ -1,17 +1,19 @@
 package model;
 
+import javax.swing.text.Caret;
 import java.util.*;
 
 public class Modelo {
 
     // Array que almacena las carreteras generadas
-    private Carretera[] carreterasClass;
+    private ArrayList<Carretera> carreterasClass;
 
     // Lista que almacena los cruces generados
     private ArrayList<Cruce> cruces;
 
     // Tamaño del mapa (20x20, 30x30, etc.)
     private int tamano;
+    public boolean invalidFormation;
 
     // Matriz utilizada para representar visualmente el mapa
     String[][] pintar;
@@ -21,13 +23,22 @@ public class Modelo {
      * Cada posición ocupada por una carretera se marca con el símbolo "#".
      */
     public void pintarCarreteras() {
-        for (int i = 0; i < carreterasClass.length; i++) {
-            Posicion[] currcarretera = carreterasClass[i].getPosiciones();
+        for (int j = 0; j <cruces.size() ; j++) {
+            pintar[cruces.get(j).getPosicion().getX()][cruces.get(j).getPosicion().getY()] = "X";
+
+        }
+        for (int i = 0; i < carreterasClass.size(); i++) {
+            Posicion[] currcarretera = carreterasClass.get(i).getPosiciones();
 
             // Marca las posiciones de la carretera actual con "#"
             for (int j = 0; j < currcarretera.length; j++) {
-                pintar[currcarretera[j].getX()][currcarretera[j].getY()] = "#";
+                if(pintar[currcarretera[j].getX()][currcarretera[j].getY()] == " "){
+                    pintar[currcarretera[j].getX()][currcarretera[j].getY()] = "#";
+                }
+
+
             }
+
 
             // Imprime la matriz `pintar` después de procesar cada carretera
             for (String[] strings : pintar) {
@@ -46,12 +57,13 @@ public class Modelo {
      */
     public Modelo(int tamano) {
         this.tamano = tamano;
-        carreterasClass = new Carretera[tamano / 2];
-        cruces = new ArrayList<>(tamano / 2);
-        pintar = new String[15][15]; // NOTA: Aquí hay un problema potencial (ver observaciones).
+        carreterasClass = new ArrayList<>();
+        cruces = new ArrayList<>();
+        pintar = new String[tamano][tamano]; // NOTA: Aquí hay un problema potencial (ver observaciones).
         for (String[] row : pintar) {
             Arrays.fill(row, " "); // Inicializa todas las celdas con espacios en blanco.
         }
+        invalidFormation = false;
     }
 
     /**
@@ -62,10 +74,11 @@ public class Modelo {
         LinkedList<Integer> yOcupadas = new LinkedList<>(); // Almacena las filas ocupadas por carreteras verticales.
         LinkedList<Integer> xOcupadas = new LinkedList<>(); // Almacena las columnas ocupadas por carreteras horizontales.
 
-        for (int i = 0; i < tamano / 2; i++) {
+        for (int i = 0; i < tamano/2 ; i++) {
+
             Carretera carretera = new Carretera();
             boolean esVertical = i % 2 == 0; // Alternar entre carreteras verticales y horizontales.
-            System.out.println(esVertical);
+
             carretera.setId(i);
 
             Random random = new Random(System.currentTimeMillis());
@@ -84,6 +97,7 @@ public class Modelo {
                 posicionInicial = new Posicion(xInicial, yInicial);
             } else {
                 boolean estaEnMismaFilaOColumna = true;
+                int bucletries = tamano;
                 do {
                     Carretera carreteraRandom;
                     int indexCarreteraRandom;
@@ -96,28 +110,34 @@ public class Modelo {
 
                     if(esVertical){
                         if ( !xOcupadas.contains(posicionInicial.getX())) {
-                            System.out.println("Y ocupadas: "+ yOcupadas);
-                            System.out.println("Posicion inicial: "+posicionInicial.getY());
+
                             estaEnMismaFilaOColumna = false;
                         }
                     }
 
                     else{
                         if ( !yOcupadas.contains(posicionInicial.getY()) && !xOcupadas.contains(posicionInicial.getX())) {
-                            System.out.println("X ocupadas: "+ yOcupadas);
-                            System.out.println("Posicion inicial: "+posicionInicial.getY());
+
                             estaEnMismaFilaOColumna = false;
+
                         }
                     }
 
                     xInicial = posicionInicial.getX();
                     yInicial = posicionInicial.getY();
 
+                    if(bucletries<=0){
+                        invalidFormation = true;
+                       estaEnMismaFilaOColumna = false;
+                    }
+                    bucletries--;
                 } while (estaEnMismaFilaOColumna);
             }
 
             int xFinal;
             int yFinal;
+
+
 
             if (esVertical) {
                 carretera.setDireccion(Direccion.VERTICAL);
@@ -129,20 +149,26 @@ public class Modelo {
                 else{
                     yFinal = yInicial + longitudCarretera - 1;
                 }
-
+                if (yFinal>= tamano){
+                    yFinal = tamano-1;
+                }
 
                 yOcupadas.add(yInicial);
                 yOcupadas.add(yInicial+1);
                 yOcupadas.add(yInicial-1);
             } else {
+
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
                 if(xInicial>longitudCarretera){
                     xFinal = xInicial - longitudCarretera ;
-                    System.out.println(xFinal +  "xFinal " + " xInicial "+ xInicial);
+
                 }
                 else{
                     xFinal = xInicial + longitudCarretera - 1;
+                }
+                if (xFinal>= tamano){
+                    xFinal = tamano-1;
                 }
 
                 xOcupadas.add(xInicial);
@@ -152,31 +178,53 @@ public class Modelo {
 
             carreteras.add(carretera);
             Posicion posicionFinal = new Posicion(xFinal, yFinal);
-            System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
-            System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
-            cruces.add(new Cruce(new Posicion(xInicial, yInicial)));
-            carreterasClass[i] = carretera;
+            carreterasClass.add(carretera);
         }
 
         // Imprime las carreteras generadas para depuración
         for (Carretera carretera : carreteras) {
-            System.out.println("Carretera " + carretera.getId() + ": " + Arrays.toString(carretera.getPosiciones()));
+
         }
     }
     /**
      * Obtiene las carreteras generadas.
      * @return Un array con las carreteras.
      */
-    public Carretera[] getCarreteras() {
+    public ArrayList<Carretera> getCarreteras() {
         return carreterasClass;
+    }
+
+    public void getCommonPoints() {
+        Map<Posicion, Integer> pointCount = new HashMap<>();
+
+        // Iterate through each Carretera
+        for (Carretera carretera : carreterasClass) {
+            Posicion[] posiciones = carretera.getPosiciones();
+
+            // Iterate through each point in the Carretera
+            for (Posicion posicion : posiciones) {
+                pointCount.put(posicion, pointCount.getOrDefault(posicion, 0) + 1);
+            }
+        }
+
+        // Collect points that are common (count > 1)
+        List<Posicion> commonPoints = new ArrayList<>();
+        for (Map.Entry<Posicion, Integer> entry : pointCount.entrySet()) {
+            if (entry.getValue() > 1) {
+
+                cruces.add(new Cruce(entry.getKey()));
+            }
+        }
+
+
     }
 
     /**
      * Establece las carreteras generadas.
      * @param carreteras Un array con las carreteras.
      */
-    public void setCarreteras(Carretera[] carreteras) {
+    public void setCarreteras(ArrayList<Carretera> carreteras) {
         this.carreterasClass = carreteras;
     }
 

@@ -14,9 +14,15 @@ public class Simulador {
         Modelo modelo = new Modelo(10);
 
         // Genera las carreteras y los cruces en el mapa
-        modelo.generarCarreteras();
 
+        do {
+            modelo = new Modelo(10);
+            modelo.generarCarreteras();
+        } while (modelo.invalidFormation);
+
+        modelo.getCommonPoints();
         // Pinta las carreteras en la consola
         modelo.pintarCarreteras();
+
     }
 }
