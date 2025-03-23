@@ -48,9 +48,9 @@ public class Modelo {
         this.tamano = tamano;
         carreteras = new ArrayList<>(tamano / 2);
         cruces = new ArrayList<>(tamano / 2);
-        pintar = new String[15][15]; // NOTA: Aquí hay un problema potencial (ver observaciones).
+        pintar = new String[15][15]; // NOTA: Aquí hay un problema potencial (ver observaciones)
         for (String[] row : pintar) {
-            Arrays.fill(row, " "); // Inicializa todas las celdas con espacios en blanco.
+            Arrays.fill(row, " "); // Inicializa todas las celdas con espacios en blanco
         }
     }
 
@@ -58,55 +58,55 @@ public class Modelo {
      * Genera las carreteras y los cruces en el mapa.
      */
     public void generarCarreteras() {
-        // Listas enlazadas para almacenar las filas y columnas ocupadas por carreteras verticales y horizontales, respectivamente.
-        LinkedList<Integer> yOcupadas = new LinkedList<>(); // Filas ocupadas por carreteras verticales.
-        LinkedList<Integer> xOcupadas = new LinkedList<>(); // Columnas ocupadas por carreteras horizontales.
+        // Listas enlazadas para almacenar las filas y columnas ocupadas por carreteras verticales y horizontales, respectivamente
+        LinkedList<Integer> yOcupadas = new LinkedList<>(); // Filas ocupadas por carreteras verticales
+        LinkedList<Integer> xOcupadas = new LinkedList<>(); // Columnas ocupadas por carreteras horizontales
 
-        // Genera `n / 2` carreteras (la mitad del tamaño del mapa/tablero).
+        // Genera `n / 2` carreteras (la mitad del tamaño del mapa/tablero)
         for (int i = 0; i < tamano / 2; i++) {
-            Carretera carretera = new Carretera(); // Crea una nueva instancia de Carretera.
+            Carretera carretera = new Carretera(); // Crea una nueva instancia de Carretera
 
-            // Alterna entre carreteras verticales y horizontales. Si `i` es par, la carretera será vertical.
-            boolean esVertical = i % 2 == 0;
+            // Alterna entre carreteras verticales y horizontales. Si `i` es par, la carretera será vertical
+            boolean esHorizontal = i % 2 == 0;
 
-            System.out.println(esVertical); // Imprime si la carretera es vertical o no.
+            System.out.println(esHorizontal); // Imprime si la carretera es vertical o no
 
-            carretera.setId(i); // Asigna un ID único a la carretera.
+            carretera.setId(i); // Asigna un ID único a la carretera
 
-            // Generador de números aleatorios para determinar las posiciones iniciales y longitudes de las carreteras.
+            // Generador de números aleatorios para determinar las posiciones iniciales y longitudes de las carreteras
             Random random = new Random(System.currentTimeMillis());
 
-            // Genera una posición inicial aleatoria dentro del rango permitido.
+            // Genera una posición inicial aleatoria dentro del rango permitido
             int xInicial = random.nextInt(1, tamano / 2 - 1);
             int yInicial = random.nextInt(1, tamano / 2 - 1);
 
-            int longitudCarretera; // Variable para almacenar la longitud de la carretera.
+            int longitudCarretera; // Variable para almacenar la longitud de la carretera
 
-            // Determina la longitud de la carretera según su orientación.
-            if (esVertical)
-                longitudCarretera = random.nextInt(3, tamano - 1 - yInicial); // Longitud vertical.
+            // Determina la longitud de la carretera según su orientación
+            if (esHorizontal)
+                longitudCarretera = random.nextInt(3, tamano - 1 - yInicial); // Longitud vertical
             else
-                longitudCarretera = random.nextInt(3, tamano - 1 - xInicial); // Longitud horizontal.
+                longitudCarretera = random.nextInt(3, tamano - 1 - xInicial); // Longitud horizontal
 
-            Posicion posicionInicial; // Almacena la posición inicial de la carretera.
+            Posicion posicionInicial; // Almacena la posición inicial de la carretera
 
-            // Si es la primera carretera, simplemente asigna la posición inicial generada.
+            // Si es la primera carretera, simplemente asigna la posición inicial generada
             if (i == 0) {
                 posicionInicial = new Posicion(xInicial, yInicial);
             } else {
-                boolean estaEnMismaFilaOColumna = true; // Bandera para evitar que las carreteras se crucen.
+                boolean estaEnMismaFilaOColumna = true; // Bandera para evitar que las carreteras se crucen
 
-                // Bucle para asegurarse de que la nueva carretera no se superponga con otras existentes.
+                // Bucle para asegurarse de que la nueva carretera no se superponga con otras existentes
                 do {
-                    Carretera carreteraRandom; // Carretera seleccionada aleatoriamente como referencia.
+                    Carretera carreteraRandom; // Carretera seleccionada aleatoriamente como referencia
                     int indexCarreteraRandom;
                   
-                    // Selecciona una carretera aleatoria de las ya generadas.
+                    // Selecciona una carretera aleatoria de las ya generadas
                     indexCarreteraRandom = random.nextInt(carreteras.size()); //ESTO ES SOSPECHOSO
                   
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
 
-                    // Obtiene las posiciones de la carretera seleccionada.
+                    // Obtiene las posiciones de la carretera seleccionada
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
@@ -118,48 +118,48 @@ public class Modelo {
                         }
                     }
 
-                    // Actualiza las coordenadas iniciales basadas en la posición inicial seleccionada.
+                    // Actualiza las coordenadas iniciales basadas en la posición inicial seleccionada
                     xInicial = posicionInicial.getX();
                     yInicial = posicionInicial.getY();
 
-                } while (estaEnMismaFilaOColumna); // Repite hasta que se encuentre una posición válida.
+                } while (estaEnMismaFilaOColumna); // Repite hasta que se encuentre una posición válida
             }
 
-            int xFinal; // Coordenada X final de la carretera.
-            int yFinal; // Coordenada Y final de la carretera.
+            int xFinal; // Coordenada X final de la carretera
+            int yFinal; // Coordenada Y final de la carretera
 
-            // Calcula las coordenadas finales según la orientación de la carretera.
-            if (esVertical) {
-                carretera.setDireccion(Direccion.VERTICAL); // Establece la dirección como vertical.
-                xFinal = xInicial; // La coordenada X permanece igual.
-                yFinal = yInicial + longitudCarretera - 1; // Calcula la coordenada Y final.
-                yOcupadas.add(yInicial); // Registra la fila ocupada.
+            // Calcula las coordenadas finales según la orientación de la carretera
+            if (esHorizontal) {
+                carretera.setDireccion(Direccion.VERTICAL); // Establece la dirección como vertical
+                xFinal = xInicial; // La coordenada X permanece igual
+                yFinal = yInicial + longitudCarretera - 1; // Calcula la coordenada Y final
+                yOcupadas.add(yInicial); // Registra la fila ocupada
             } else {
-                carretera.setDireccion(Direccion.HORIZONTAL); // Establece la dirección como horizontal.
-                yFinal = yInicial; // La coordenada Y permanece igual.
-                xFinal = xInicial + longitudCarretera - 1; // Calcula la coordenada X final.
-                xOcupadas.add(xInicial); // Registra la columna ocupada.
+                carretera.setDireccion(Direccion.HORIZONTAL); // Establece la dirección como horizontal
+                yFinal = yInicial; // La coordenada Y permanece igual
+                xFinal = xInicial + longitudCarretera - 1; // Calcula la coordenada X final
+                xOcupadas.add(xInicial); // Registra la columna ocupada
             }
 
-            // Agrega la carretera a la lista de carreteras generadas.
+            // Agrega la carretera a la lista de carreteras generadas
             carreteras.add(carretera);
 
-            // Crea la posición final de la carretera.
+            // Crea la posición final de la carretera
             Posicion posicionFinal = new Posicion(xFinal, yFinal);
 
-            // Imprime las posiciones inicial y final de la carretera para depuración.
+            // Imprime las posiciones inicial y final de la carretera para depuración
             System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
             System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
 
-            // Establece las posiciones inicial y final en la carretera.
+            // Establece las posiciones inicial y final en la carretera
             carretera.setPosiciones(posicionInicial, posicionFinal);
 
-            // Crea un nuevo cruce en la posición inicial de la carretera.
+            // Crea un nuevo cruce en la posición inicial de la carretera
             cruces.add(new Cruce(new Posicion(xInicial, yInicial)));
             carreteras.add(carretera);
         }
 
-        // Imprime todas las carreteras generadas para depuración.
+        // Imprime todas las carreteras generadas para depuración
         for (Carretera carretera : carreteras) {
             System.out.println("Carretera " + carretera.getId() + ": " + Arrays.toString(carretera.getPosiciones()));
         }
