@@ -80,23 +80,23 @@ Se pueden dar situaciones en las que dos vehículos ocupen el mismo punto del ma
 
 A continuación, se muestran ejemplos de algunos de los escenarios descritos anteriormente.
 
-- Ejemplo 1: Prioridad en cruce por continuación por misma carretera
+- **Ejemplo 1:** Prioridad en cruce por continuación por misma carretera
 
 ![Mapa de carreteras simulado 2](/img/mapa02.png)
 
-- Ejemplo 2. Espera en cruce detrás de otro vehículo que espera
+- **Ejemplo 2:** Espera en cruce detrás de otro vehículo que espera
 
 ![Mapa de carreteras simulado 3](/img/mapa03.png)
 
-- Ejemplo 3. Prioridad en cruce por giro a la derecha
+- **Ejemplo 3:** Prioridad en cruce por giro a la derecha
 
 ![Mapa de carreteras simulado 4](/img/mapa04.png)
 
-- Ejemplo 4. Aunque el vehículo 1 avance a una velocidad de 2 casillas por paso de simulación, este tiene que pasar sí o sí por la casilla compartida que tienen las dos carreteras.
+- **Ejemplo 4:** Aunque el vehículo 1 avance a una velocidad de 2 casillas por paso de simulación, este tiene que pasar sí o sí por la casilla compartida que tienen las dos carreteras.
 
 ![Mapa de carreteras simulado 5](/img/mapa05.png)
 
-- Ejemplo 5. Aunque el vehículo 1 avance a una velocidad de 2 casillas por paso de simulación, este tiene que esperar sí o sí antes del cruce.
+- **Ejemplo 5:** Aunque el vehículo 1 avance a una velocidad de 2 casillas por paso de simulación, este tiene que esperar sí o sí antes del cruce.
 
 ![Mapa de carreteras simulado 6](/img/mapa06.png)
 
@@ -110,4 +110,3 @@ A continuación, se muestran ejemplos de algunos de los escenarios descritos ant
 ---
 
 # Resolución del problema
-
