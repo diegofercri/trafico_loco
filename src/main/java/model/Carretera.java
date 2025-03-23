@@ -20,16 +20,18 @@ public class Carretera {
     }
 
     public void setPosiciones(Position posicionInicial, Position posicionFinal) {
+
         if (this.direccion == Direccion.VERTICAL) {
-            int diferencia = posicionFinal.getY() - posicionInicial.getY();
+            int diferencia = Math.abs(posicionFinal.getY() - posicionInicial.getY());
             posiciones = new Position[diferencia + 1];
             int x = posicionInicial.getX();
-            for (int i = 1; i < Math.abs(diferencia); i++) {
-                System.out.println("EN EL IF " + i);
+            for (int i = 1; i < diferencia; i++) {
+
                 int y = posicionInicial.getY() + i;
                 Position posicion = new Position(x, y);
                 posiciones[i] = posicion;
             }
+
             posiciones[0] = posicionInicial;
             posiciones[posiciones.length - 1] = posicionFinal;
         }
@@ -37,8 +39,7 @@ public class Carretera {
             int diferencia = posicionFinal.getX() - posicionInicial.getX();
             posiciones = new Position[diferencia + 1];
             int y = posicionInicial.getY();
-            for (int i = 1; i < Math.abs(diferencia); i++) {
-                System.out.println("EN EL ELSE " + i);
+            for (int i = 1; i < diferencia; i++) {
                 int x = posicionInicial.getX() + i;
                 Position posicion = new Position(x, y);
                 posiciones[i] = posicion;

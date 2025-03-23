@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Modelo {
 
-    private Carretera[] carreteras;
+    private Carretera[] carreterasClass;
 
     private ArrayList<Cruce> cruces;
 
@@ -15,14 +15,14 @@ public class Modelo {
 
     public Modelo(int tamano) {
         this.tamano = tamano;
-        carreteras = new Carretera[tamano / 2];
+        carreterasClass = new Carretera[tamano / 2];
         cruces = new ArrayList<>(tamano / 2);
         // generarCarreteras();
     }
 
     public void generarCarreteras() {
-        LinkedList<Carretera> carreterasVerticales = new LinkedList<>();
-        LinkedList<Carretera> carreterasHorizontales = new LinkedList<>();
+        LinkedList<Carretera> carreteras = new LinkedList<>();
+
         LinkedList<Integer> yOcupadas = new LinkedList<>();
         LinkedList<Integer> xOcupadas = new LinkedList<>();
         for (int i = 0; i < tamano / 2; i++) {
@@ -32,69 +32,71 @@ public class Modelo {
             Random random = new Random(System.currentTimeMillis());
             int xInicial = random.nextInt(1, tamano/2 - 1);
             int yInicial = random.nextInt(1, tamano/2 - 1);
+            System.out.println("La x inicial " + xInicial);
+            System.out.println("La y inicial " + yInicial);
             int longitudCarretera;
-            if (esVertical) 
+            if (esVertical)
                 longitudCarretera = random.nextInt(3, tamano - 1 - yInicial);
             else
                 longitudCarretera = random.nextInt(3, tamano - 1 - xInicial);
             Position posicionInicial;
+
             if (i == 0) {
                 posicionInicial = new Position(xInicial, yInicial);
-            } else {
+
+
+            }
+            else {
                 boolean estaEnMismaFilaOColumna = true;
                 do {
-                    Carretera carreteraRandom; 
+                    Carretera carreteraRandom;
                     int indexCarreteraRandom;
-                    if (esVertical) {
-                        indexCarreteraRandom = random.nextInt(carreterasHorizontales.size());
-                        carreteraRandom = carreterasHorizontales.get(indexCarreteraRandom);
+
+                    indexCarreteraRandom = random.nextInt(carreteras.size());
+                    if(carretera.getDireccion() == Direccion.VERTICAL){
+                      if(!yOcupadas.contains(indexCarreteraRandom)){
+                          estaEnMismaFilaOColumna = false;
+                      }
                     }
-                    else {
-                        indexCarreteraRandom = random.nextInt(carreterasVerticales.size());
-                        carreteraRandom = carreterasVerticales.get(indexCarreteraRandom);
+                    else{
+                        if(!xOcupadas.contains(indexCarreteraRandom)){
+                            estaEnMismaFilaOColumna = false;
+                        }
                     }
 
-                    Position[] posiciones = carreteraRandom.getPosiciones();
-                    int indexPosicionRandom = random.nextInt(posiciones.length);
-                    posicionInicial = posiciones[indexPosicionRandom];
-                    if (esVertical) {
-                        boolean estaEnVerticalOcupada = false;
-                        for (int y: yOcupadas) {
-                            if (posicionInicial.getY() == y)
-                                estaEnVerticalOcupada = true;
-                        }
-                        if (!estaEnVerticalOcupada)
-                            estaEnMismaFilaOColumna = false;
-                    } else {
-                        boolean estaEnHorizontalOcupada = false;
-                        for (int x: xOcupadas) {
-                            if (posicionInicial.getX() == x)
-                                estaEnHorizontalOcupada = true;
-                        }
-                        if (!estaEnHorizontalOcupada)
-                            estaEnMismaFilaOColumna = false;
-                    }
+                        carreteraRandom = carreteras.get(indexCarreteraRandom);
+                        Position[] posiciones = carreteraRandom.getPosiciones();
+                        int indexPosicionRandom = random.nextInt(posiciones.length);
+                        posicionInicial = posiciones[indexPosicionRandom];
+                        xInicial = posicionInicial.getX();
+                        yInicial = posicionInicial.getY();
+
+
                 } while (estaEnMismaFilaOColumna);
             }
+
             int xFinal;
             int yFinal;
             if (esVertical) {
                 carretera.setDireccion(Direccion.VERTICAL);
                 xFinal = xInicial;
+                System.out.println("La x inicial en el if" + xInicial);
                 yFinal = yInicial + longitudCarretera - 1;
-                carreterasVerticales.add(carretera);
                 yOcupadas.add(posicionInicial.getY());
             } else {
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
+                System.out.println("La y inicial en el else" + yInicial);
                 xFinal = xInicial + longitudCarretera - 1;
-                carreterasHorizontales.add(carretera);
                 xOcupadas.add(posicionInicial.getX());
             }
+            carreteras.add(carretera);
 
             Position posicionFinal = new Position(xFinal, yFinal);
+            System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
+            System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
-            carreteras[i] = carretera;
+            carreterasClass[i] = carretera;
         }
 
         for (Carretera carretera : carreteras) {
@@ -103,11 +105,11 @@ public class Modelo {
     }
 
     public Carretera[] getCarreteras() {
-        return carreteras;
+        return carreterasClass;
     }
 
     public void setCarreteras(Carretera[] carreteras) {
-        this.carreteras = carreteras;
+        this.carreterasClass = carreteras;
     }
 
     public ArrayList<Cruce> getCruces() {
