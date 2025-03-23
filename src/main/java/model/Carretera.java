@@ -45,39 +45,53 @@ public class Carretera {
      */
     public void setPosiciones(Posicion posicionInicial, Posicion posicionFinal) {
 
-        // Si la carretera es vertical, calcula las posiciones basándose en la diferencia de las coordenadas Y
-        if (this.direccion == Direccion.VERTICAL) {
+        // En el if podeis dejar la que ya hay o usar esta otra condición:
+        // this.direccion == Direccion.VERTICAL
+
+        // Diferenciamos entre orientacion vertical y horizontal
+        // Carretera Vertical
+        if (posicionInicial.getX() == posicionFinal.getX()) {
+
+            // Calcula la diferencia absoluta entre las coordenadas Y
             int diferencia = Math.abs(posicionFinal.getY() - posicionInicial.getY());
-            posiciones = new Posicion[diferencia + 1]; // Crea un array para almacenar las posiciones
-            int x = posicionInicial.getX(); // La coordenada X es constante en una carretera vertical
+
+            // Crea un array para almacenar las posiciones
+            posiciones = new Posicion[diferencia + 1];
+
+            // La coordenada X es constante en una carretera vertical
+            int x = posicionInicial.getX();
+
+            // Determina la dirección: incrementar (+1) o decrementar (-1)
+            int direccion = (posicionFinal.getY() > posicionInicial.getY()) ? 1 : -1;
 
             // Genera las posiciones intermedias
-            for (int i = 1; i < diferencia; i++) {
-                int y = posicionInicial.getY() + i;
+            for (int i = 0; i <= diferencia; i++) {
+                int y = posicionInicial.getY() + i * direccion;
                 Posicion posicion = new Posicion(x, y);
                 posiciones[i] = posicion;
             }
 
-            // Asigna las posiciones inicial y final
-            posiciones[0] = posicionInicial;
-            posiciones[posiciones.length - 1] = posicionFinal;
-        }
-        // Si la carretera es horizontal, calcula las posiciones basándose en la diferencia de las coordenadas X
-        else {
-            int diferencia = posicionFinal.getX() - posicionInicial.getX();
-            posiciones = new Posicion[diferencia + 1]; // Crea un array para almacenar las posiciones
-            int y = posicionInicial.getY(); // La coordenada Y es constante en una carretera horizontal
+        // Carretera Horizontal
+        } else {
+
+            // Calcula la diferencia absoluta entre las coordenadas X
+            int diferencia = Math.abs(posicionFinal.getX() - posicionInicial.getX());
+
+            // Crea un array para almacenar las posiciones
+            posiciones = new Posicion[diferencia + 1];
+
+            // La coordenada Y es constante en una carretera vertical
+            int y = posicionInicial.getY();
+
+            // Determina la dirección: incrementar (+1) o decrementar (-1)
+            int direccion = (posicionFinal.getX() > posicionInicial.getX()) ? 1 : -1;
 
             // Genera las posiciones intermedias
-            for (int i = 1; i < diferencia; i++) {
-                int x = posicionInicial.getX() + i;
+            for (int i = 0; i <= diferencia; i++) {
+                int x = posicionInicial.getX() + i * direccion;
                 Posicion posicion = new Posicion(x, y);
                 posiciones[i] = posicion;
             }
-
-            // Asigna las posiciones inicial y final
-            posiciones[0] = posicionInicial;
-            posiciones[posiciones.length - 1] = posicionFinal;
         }
     }
 
@@ -113,11 +127,4 @@ public class Carretera {
         return direccion;
     }
 
-    /**
-     * Mét0d0 destinado a generar las posiciones intermedias de la carretera.
-     * Actualmente no implementado.
-     */
-    private void generarPosicionesIntermedias() {
-        // TODO: Implementar lógica para generar posiciones intermedias
-    }
 }
