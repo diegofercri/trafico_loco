@@ -3,7 +3,7 @@ package model;
 /**
  * Clase que representa una posición en el mapa mediante coordenadas (x, y).
  */
-public class Position {
+public class Posicion {
 
     // Coordenada X de la posición
     private int x;
@@ -12,11 +12,11 @@ public class Position {
     private int y;
 
     /**
-     * Constructor de la clase Position.
+     * Constructor de la clase Posicion.
      * @param x La coordenada X de la posición.
      * @param y La coordenada Y de la posición.
      */
-    public Position(int x, int y) {
+    public Posicion(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -70,12 +70,12 @@ public class Position {
      */
     @Override
     public boolean equals(Object obj) {
-        // Si el objeto no es una instancia de Position, no pueden ser iguales
-        if (!(obj instanceof Position))
+        // Si el objeto no es una instancia de Posicion, no pueden ser iguales
+        if (!(obj instanceof Posicion))
             return false;
 
-        // Convierte el objeto a Position y compara las coordenadas
-        Position otraPosicion = (Position) obj;
+        // Convierte el objeto a Posicion y compara las coordenadas
+        Posicion otraPosicion = (Posicion) obj;
         return this.x == otraPosicion.getX() && this.y == otraPosicion.getY();
     }
 }

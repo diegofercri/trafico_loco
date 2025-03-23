@@ -6,7 +6,7 @@ public class Carretera {
     private int id;
 
     // Array que almacena las posiciones (coordenadas) que conforman la carretera
-    private Position[] posiciones;
+    private Posicion[] posiciones;
 
     // Array que almacena los cruces asociados a esta carretera
     private Cruce[] cruces;
@@ -34,7 +34,7 @@ public class Carretera {
      * Obtiene las posiciones que conforman la carretera.
      * @return Un array con las posiciones de la carretera.
      */
-    public Position[] getPosiciones() {
+    public Posicion[] getPosiciones() {
         return posiciones;
     }
 
@@ -43,18 +43,18 @@ public class Carretera {
      * @param posicionInicial La posición inicial de la carretera.
      * @param posicionFinal La posición final de la carretera.
      */
-    public void setPosiciones(Position posicionInicial, Position posicionFinal) {
+    public void setPosiciones(Posicion posicionInicial, Posicion posicionFinal) {
 
         // Si la carretera es vertical, calcula las posiciones basándose en la diferencia de las coordenadas Y
         if (this.direccion == Direccion.VERTICAL) {
             int diferencia = Math.abs(posicionFinal.getY() - posicionInicial.getY());
-            posiciones = new Position[diferencia + 1]; // Crea un array para almacenar las posiciones
+            posiciones = new Posicion[diferencia + 1]; // Crea un array para almacenar las posiciones
             int x = posicionInicial.getX(); // La coordenada X es constante en una carretera vertical
 
             // Genera las posiciones intermedias
             for (int i = 1; i < diferencia; i++) {
                 int y = posicionInicial.getY() + i;
-                Position posicion = new Position(x, y);
+                Posicion posicion = new Posicion(x, y);
                 posiciones[i] = posicion;
             }
 
@@ -65,13 +65,13 @@ public class Carretera {
         // Si la carretera es horizontal, calcula las posiciones basándose en la diferencia de las coordenadas X
         else {
             int diferencia = posicionFinal.getX() - posicionInicial.getX();
-            posiciones = new Position[diferencia + 1]; // Crea un array para almacenar las posiciones
+            posiciones = new Posicion[diferencia + 1]; // Crea un array para almacenar las posiciones
             int y = posicionInicial.getY(); // La coordenada Y es constante en una carretera horizontal
 
             // Genera las posiciones intermedias
             for (int i = 1; i < diferencia; i++) {
                 int x = posicionInicial.getX() + i;
-                Position posicion = new Position(x, y);
+                Posicion posicion = new Posicion(x, y);
                 posiciones[i] = posicion;
             }
 

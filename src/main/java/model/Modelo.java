@@ -22,7 +22,7 @@ public class Modelo {
      */
     public void pintarCarreteras() {
         for (int i = 0; i < carreterasClass.length; i++) {
-            Position[] currcarretera = carreterasClass[i].getPosiciones();
+            Posicion[] currcarretera = carreterasClass[i].getPosiciones();
 
             // Marca las posiciones de la carretera actual con "#"
             for (int j = 0; j < currcarretera.length; j++) {
@@ -78,10 +78,10 @@ public class Modelo {
             else
                 longitudCarretera = random.nextInt(3, tamano - 1 - xInicial);
 
-            Position posicionInicial;
+            Posicion posicionInicial;
 
             if (i == 0) {
-                posicionInicial = new Position(xInicial, yInicial);
+                posicionInicial = new Posicion(xInicial, yInicial);
             } else {
                 boolean estaEnMismaFilaOColumna = true;
                 do {
@@ -90,7 +90,7 @@ public class Modelo {
 
                     indexCarreteraRandom = i - 1;
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
-                    Position[] posiciones = carreteraRandom.getPosiciones();
+                    Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
 
@@ -123,11 +123,11 @@ public class Modelo {
             }
 
             carreteras.add(carretera);
-            Position posicionFinal = new Position(xFinal, yFinal);
+            Posicion posicionFinal = new Posicion(xFinal, yFinal);
             System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
             System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
-            cruces.add(new Cruce(new Position(xInicial, yInicial)));
+            cruces.add(new Cruce(new Posicion(xInicial, yInicial)));
             carreterasClass[i] = carretera;
         }
 
