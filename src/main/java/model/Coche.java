@@ -6,7 +6,7 @@ public class Coche {
     private int id;
 
     // Posición actual del coche en el mapa
-    private Position position;
+    private Posicion posicion;
 
     // Velocidad del coche (número de casillas que se mueve por ciclo de simulación)
     private int velocidad;
@@ -31,16 +31,16 @@ public class Coche {
      * Obtiene la posición actual del coche.
      * @return La posición actual del coche.
      */
-    public Position getPosition() {
-        return position;
+    public Posicion getPosition() {
+        return posicion;
     }
 
     /**
      * Establece la posición actual del coche.
-     * @param position La nueva posición del coche.
+     * @param posicion La nueva posición del coche.
      */
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPosition(Posicion posicion) {
+        this.posicion = posicion;
     }
 
     /**

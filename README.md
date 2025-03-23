@@ -176,10 +176,10 @@ El simulador permite:
 - **Propósito:** Representa un vehículo que se mueve por las carreteras hacia un destino.
 - **Funcionalidades principales:**
    - Almacena la posición actual, la velocidad y el identificador del coche.
-   - Proporciona métodos para acceder y modificar sus propiedades (`id`, `position`, `velocidad`).
+   - Proporciona métodos para acceder y modificar sus propiedades (`id`, `posicion`, `velocidad`).
 - **Propiedades:**
    - `id`: Identificador único del coche.
-   - `position`: Posición actual del coche en el mapa.
+   - `posicion`: Posición actual del coche en el mapa.
    - `velocidad`: Velocidad del coche (número de casillas que se mueve por ciclo de simulación).
 - **Observaciones:**
    - No incluye lógica para moverse ni para calcular su siguiente posición basándose en su destino.

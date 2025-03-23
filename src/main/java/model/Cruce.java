@@ -3,13 +3,13 @@ package model;
 public class Cruce {
 
     // Posición del cruce en el mapa
-    private Position posicion;
+    private Posicion posicion;
 
     /**
      * Constructor de la clase Cruce.
      * @param posicion La posición del cruce en el mapa.
      */
-    public Cruce(Position posicion) {
+    public Cruce(Posicion posicion) {
         this.posicion = posicion;
     }
 
@@ -31,9 +31,9 @@ public class Cruce {
 
     /**
      * Obtiene la posición completa del cruce.
-     * @return La posición del cruce como un objeto Position.
+     * @return La posición del cruce como un objeto Posicion.
      */
-    public Position getPosicion() {
+    public Posicion getPosicion() {
         return posicion;
     }
 }
