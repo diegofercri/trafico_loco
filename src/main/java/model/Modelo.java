@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class Modelo {
 
@@ -12,17 +9,42 @@ public class Modelo {
     private ArrayList<Cruce> cruces;
 
     private int tamano;
+    //private HashMap hash;
+    String[][] pintar;
+    public void pintarCarreteras(){
+
+        for (int i = 0; i <carreterasClass.length ; i++) {
+            Position[] currcarretera = carreterasClass[i].getPosiciones();
+
+            for (int j = 0; j <currcarretera.length ; j++) {
+                 pintar[currcarretera[j].getX()][currcarretera[j].getY()] = "#";
+            }
+
+        }
+        for (String[] strings : pintar) {
+            System.out.println();
+            for (String string : strings) {
+                System.out.print(string);
+
+            }
+        }
+
+    }
 
     public Modelo(int tamano) {
         this.tamano = tamano;
         carreterasClass = new Carretera[tamano / 2];
         cruces = new ArrayList<>(tamano / 2);
+        pintar = new String[15][15];
+        for(String[] row : pintar) {
+            Arrays.fill(row, "*");
+        }
+        //hash = new HashMap<Integer, String>(10); para q lo pase manu a hasmap
         // generarCarreteras();
     }
 
     public void generarCarreteras() {
         LinkedList<Carretera> carreteras = new LinkedList<>();
-
         LinkedList<Integer> yOcupadas = new LinkedList<>();
         LinkedList<Integer> xOcupadas = new LinkedList<>();
         for (int i = 0; i < tamano / 2; i++) {
@@ -32,8 +54,6 @@ public class Modelo {
             Random random = new Random(System.currentTimeMillis());
             int xInicial = random.nextInt(1, tamano/2 - 1);
             int yInicial = random.nextInt(1, tamano/2 - 1);
-            System.out.println("La x inicial " + xInicial);
-            System.out.println("La y inicial " + yInicial);
             int longitudCarretera;
             if (esVertical)
                 longitudCarretera = random.nextInt(3, tamano - 1 - yInicial);
@@ -70,7 +90,8 @@ public class Modelo {
                         posicionInicial = posiciones[indexPosicionRandom];
                         xInicial = posicionInicial.getX();
                         yInicial = posicionInicial.getY();
-
+                        System.out.println("el bucle funca x " + xInicial);
+                    System.out.println("el bucle funca y " + yInicial);
 
                 } while (estaEnMismaFilaOColumna);
             }
@@ -80,22 +101,22 @@ public class Modelo {
             if (esVertical) {
                 carretera.setDireccion(Direccion.VERTICAL);
                 xFinal = xInicial;
-                System.out.println("La x inicial en el if" + xInicial);
+               //System.out.println("La x inicial en el if" + xInicial);
                 yFinal = yInicial + longitudCarretera - 1;
                 yOcupadas.add(posicionInicial.getY());
             } else {
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
-                System.out.println("La y inicial en el else" + yInicial);
+                //System.out.println("La y inicial en el else" + yInicial);
                 xFinal = xInicial + longitudCarretera - 1;
                 xOcupadas.add(posicionInicial.getX());
             }
             carreteras.add(carretera);
-
             Position posicionFinal = new Position(xFinal, yFinal);
             System.out.println("Las posiciones iniciales son x: " + posicionInicial.getX() + " y: " + posicionInicial.getY());
             System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
+
             carreterasClass[i] = carretera;
         }
 
