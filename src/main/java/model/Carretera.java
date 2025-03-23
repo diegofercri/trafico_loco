@@ -11,9 +11,6 @@ public class Carretera {
     // Array que almacena los cruces asociados a esta carretera
     private Cruce[] cruces;
 
-    // Dirección de la carretera: vertical u horizontal
-    private Direccion direccion;
-
     /**
      * Obtiene el identificador de la carretera.
      * @return El ID de la carretera.
@@ -109,22 +106,6 @@ public class Carretera {
      */
     public void setCruces(Cruce[] cruces) {
         this.cruces = cruces;
-    }
-
-    /**
-     * Establece la dirección de la carretera.
-     * @param direccion La nueva dirección de la carretera.
-     */
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    /**
-     * Obtiene la dirección de la carretera.
-     * @return La dirección de la carretera (vertical u horizontal).
-     */
-    public Direccion getDireccion() {
-        return direccion;
     }
 
 }
