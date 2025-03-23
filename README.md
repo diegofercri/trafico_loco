@@ -110,5 +110,3 @@ A continuación, se muestran ejemplos de algunos de los escenarios descritos ant
 ---
 
 # Resolución del problema
-
- 
