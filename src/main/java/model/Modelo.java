@@ -88,16 +88,25 @@ public class Modelo {
                     Carretera carreteraRandom;
                     int indexCarreteraRandom;
 
-                    indexCarreteraRandom = i - 1;
+                    indexCarreteraRandom = random.nextInt(0, carreteras.size());
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
 
-                    for (int j = 0; j < cruces.size(); j++) {
-                        if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !xOcupadas.contains(posicionInicial.getX())) {
+                    if(esVertical){
+                        if ( !xOcupadas.contains(posicionInicial.getX())) {
+                            System.out.println("Y ocupadas: "+ yOcupadas);
+                            System.out.println("Posicion inicial: "+posicionInicial.getY());
                             estaEnMismaFilaOColumna = false;
-                            break;
+                        }
+                    }
+
+                    else{
+                        if ( !yOcupadas.contains(posicionInicial.getY()) && !xOcupadas.contains(posicionInicial.getX())) {
+                            System.out.println("X ocupadas: "+ yOcupadas);
+                            System.out.println("Posicion inicial: "+posicionInicial.getY());
+                            estaEnMismaFilaOColumna = false;
                         }
                     }
 
@@ -113,13 +122,23 @@ public class Modelo {
             if (esVertical) {
                 carretera.setDireccion(Direccion.VERTICAL);
                 xFinal = xInicial;
+
+
                 yFinal = yInicial + longitudCarretera - 1;
+
                 yOcupadas.add(yInicial);
+                yOcupadas.add(yInicial+1);
+                yOcupadas.add(yInicial-1);
             } else {
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
+
                 xFinal = xInicial + longitudCarretera - 1;
+
+
                 xOcupadas.add(xInicial);
+                xOcupadas.add(xInicial+1);
+                xOcupadas.add(xInicial-1);
             }
 
             carreteras.add(carretera);
@@ -136,7 +155,6 @@ public class Modelo {
             System.out.println("Carretera " + carretera.getId() + ": " + Arrays.toString(carretera.getPosiciones()));
         }
     }
-
     /**
      * Obtiene las carreteras generadas.
      * @return Un array con las carreteras.
