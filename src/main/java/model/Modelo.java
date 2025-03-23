@@ -123,8 +123,13 @@ public class Modelo {
                 carretera.setDireccion(Direccion.VERTICAL);
                 xFinal = xInicial;
 
+                if(yInicial>longitudCarretera){
+                    yFinal = yInicial -longitudCarretera ;
+                }
+                else{
+                    yFinal = yInicial + longitudCarretera - 1;
+                }
 
-                yFinal = yInicial + longitudCarretera - 1;
 
                 yOcupadas.add(yInicial);
                 yOcupadas.add(yInicial+1);
@@ -132,9 +137,13 @@ public class Modelo {
             } else {
                 carretera.setDireccion(Direccion.HORIZONTAL);
                 yFinal = yInicial;
-
-                xFinal = xInicial + longitudCarretera - 1;
-
+                if(xInicial>longitudCarretera){
+                    xFinal = xInicial - longitudCarretera ;
+                    System.out.println(xFinal +  "xFinal " + " xInicial "+ xInicial);
+                }
+                else{
+                    xFinal = xInicial + longitudCarretera - 1;
+                }
 
                 xOcupadas.add(xInicial);
                 xOcupadas.add(xInicial+1);
