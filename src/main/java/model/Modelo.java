@@ -5,7 +5,7 @@ import java.util.*;
 public class Modelo {
 
     // Array que almacena las carreteras generadas
-    private Carretera[] carreterasClass;
+    private LinkedList<Carretera> carreteras;
 
     // Lista que almacena los cruces generados
     private ArrayList<Cruce> cruces;
@@ -21,8 +21,8 @@ public class Modelo {
      * Cada posición ocupada por una carretera se marca con el símbolo "#".
      */
     public void pintarCarreteras() {
-        for (int i = 0; i < carreterasClass.length; i++) {
-            Posicion[] currcarretera = carreterasClass[i].getPosiciones();
+        for (int i = 0; i < carreteras.size(); i++) {
+            Posicion[] currcarretera = carreteras.get(i).getPosiciones();
 
             // Marca las posiciones de la carretera actual con "#"
             for (int j = 0; j < currcarretera.length; j++) {
@@ -46,7 +46,7 @@ public class Modelo {
      */
     public Modelo(int tamano) {
         this.tamano = tamano;
-        carreterasClass = new Carretera[tamano / 2];
+        carreteras = new LinkedList<>();
         cruces = new ArrayList<>(tamano / 2);
         pintar = new String[15][15]; // NOTA: Aquí hay un problema potencial (ver observaciones).
         for (String[] row : pintar) {
@@ -58,7 +58,6 @@ public class Modelo {
      * Genera las carreteras y los cruces en el mapa.
      */
     public void generarCarreteras() {
-        LinkedList<Carretera> carreteras = new LinkedList<>();
         LinkedList<Integer> yOcupadas = new LinkedList<>(); // Almacena las filas ocupadas por carreteras verticales.
         LinkedList<Integer> xOcupadas = new LinkedList<>(); // Almacena las columnas ocupadas por carreteras horizontales.
 
@@ -67,7 +66,6 @@ public class Modelo {
             boolean esVertical = i % 2 == 0; // Alternar entre carreteras verticales y horizontales.
             System.out.println(esVertical);
             carretera.setId(i);
-
             Random random = new Random(System.currentTimeMillis());
             int xInicial = random.nextInt(1, tamano / 2 - 1);
             int yInicial = random.nextInt(1, tamano / 2 - 1);
@@ -87,15 +85,15 @@ public class Modelo {
                 do {
                     Carretera carreteraRandom;
                     int indexCarreteraRandom;
-
-                    indexCarreteraRandom = i - 1;
+                    if
+                    indexCarreteraRandom = random.nextInt(carreteras.size()); //ESTO ES SOSPECHOSO
                     carreteraRandom = carreteras.get(indexCarreteraRandom);
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
 
                     for (int j = 0; j < cruces.size(); j++) {
-                        if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !xOcupadas.contains(posicionInicial.getX())) {
+                        if (!xOcupadas.contains(posicionInicial.getX())) {
                             estaEnMismaFilaOColumna = false;
                             break;
                         }
@@ -128,7 +126,7 @@ public class Modelo {
             System.out.println("Las posiciones finales son x: " + posicionFinal.getX() + " y: " + posicionFinal.getY());
             carretera.setPosiciones(posicionInicial, posicionFinal);
             cruces.add(new Cruce(new Posicion(xInicial, yInicial)));
-            carreterasClass[i] = carretera;
+            carreteras.add(carretera);
         }
 
         // Imprime las carreteras generadas para depuración
@@ -141,16 +139,8 @@ public class Modelo {
      * Obtiene las carreteras generadas.
      * @return Un array con las carreteras.
      */
-    public Carretera[] getCarreteras() {
-        return carreterasClass;
-    }
-
-    /**
-     * Establece las carreteras generadas.
-     * @param carreteras Un array con las carreteras.
-     */
-    public void setCarreteras(Carretera[] carreteras) {
-        this.carreterasClass = carreteras;
+    public LinkedList<Carretera> getCarreteras() {
+        return carreteras;
     }
 
     /**
