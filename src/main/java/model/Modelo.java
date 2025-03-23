@@ -17,7 +17,7 @@ public class Modelo {
     String[][] pintar;
 
     /**
-     * Método para "pintar" las carreteras en la matriz `pintar`.
+     * Mét0d0 para "pintar" las carreteras en la matriz `pintar`.
      * Cada posición ocupada por una carretera se marca con el símbolo "#".
      */
     public void pintarCarreteras() {
