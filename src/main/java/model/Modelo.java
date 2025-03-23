@@ -93,13 +93,24 @@ public class Modelo {
                     Posicion[] posiciones = carreteraRandom.getPosiciones();
                     int indexPosicionRandom = random.nextInt(posiciones.length);
                     posicionInicial = posiciones[indexPosicionRandom];
-
+                    if(esVertical){
                     for (int j = 0; j < cruces.size(); j++) {
                         if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !xOcupadas.contains(posicionInicial.getX())) {
                             estaEnMismaFilaOColumna = false;
                             break;
                         }
                     }
+                    }
+                    else{
+                        for (int j = 0; j < cruces.size(); j++) {
+                            if (!posicionInicial.equals(cruces.get(j).getPosicion()) && !yOcupadas.contains(posicionInicial.getY())) {
+                                estaEnMismaFilaOColumna = false;
+                                break;
+                            }
+                        }
+
+                    }
+
 
                     xInicial = posicionInicial.getX();
                     yInicial = posicionInicial.getY();
