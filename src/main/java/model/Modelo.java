@@ -23,10 +23,10 @@ public class Modelo {
      * Cada posición ocupada por una carretera se marca con el símbolo "#".
      */
     public void pintarCarreteras() {
-        for (int j = 0; j <cruces.size() ; j++) {
-            pintar[cruces.get(j).getPosicion().getX()][cruces.get(j).getPosicion().getY()] = "X";
-
+        for (int i = 0; i <cruces.size() ; i++) {
+            pintar[cruces.get(i).getX()][cruces.get(i).getY()] = "X";
         }
+
         for (int i = 0; i < carreterasClass.size(); i++) {
             Posicion[] currcarretera = carreterasClass.get(i).getPosiciones();
 
@@ -74,10 +74,10 @@ public class Modelo {
         LinkedList<Integer> yOcupadas = new LinkedList<>(); // Almacena las filas ocupadas por carreteras verticales.
         LinkedList<Integer> xOcupadas = new LinkedList<>(); // Almacena las columnas ocupadas por carreteras horizontales.
 
-        for (int i = 0; i < tamano/2 ; i++) {
+        for (int i = 0; i < tamano-4 ; i++) {
 
             Carretera carretera = new Carretera();
-            boolean esVertical = i % 2 == 0; // Alternar entre carreteras verticales y horizontales.
+            boolean esHorizontal = i % 2 == 0; // Alternar entre carreteras verticales y horizontales.
 
             carretera.setId(i);
 
@@ -86,7 +86,7 @@ public class Modelo {
             int yInicial = random.nextInt(1, tamano / 2 - 1);
             int longitudCarretera;
 
-            if (esVertical)
+            if (esHorizontal)
                 longitudCarretera = random.nextInt(3, tamano - 1 - yInicial);
             else
                 longitudCarretera = random.nextInt(3, tamano - 1 - xInicial);
@@ -97,40 +97,24 @@ public class Modelo {
                 posicionInicial = new Posicion(xInicial, yInicial);
             } else {
                 boolean estaEnMismaFilaOColumna = true;
-                int bucletries = tamano;
+
                 do {
-                    Carretera carreteraRandom;
-                    int indexCarreteraRandom;
 
-                    indexCarreteraRandom = random.nextInt(0, carreteras.size());
-                    carreteraRandom = carreteras.get(indexCarreteraRandom);
-                    Posicion[] posiciones = carreteraRandom.getPosiciones();
-                    int indexPosicionRandom = random.nextInt(posiciones.length);
-                    posicionInicial = posiciones[indexPosicionRandom];
-
-                    if(esVertical){
-                        if ( !xOcupadas.contains(posicionInicial.getX())) {
-
-                            estaEnMismaFilaOColumna = false;
-                        }
-                    }
-
-                    else{
-                        if ( !yOcupadas.contains(posicionInicial.getY()) && !xOcupadas.contains(posicionInicial.getX())) {
-
-                            estaEnMismaFilaOColumna = false;
-
-                        }
-                    }
-
+                    posicionInicial = new Posicion(random.nextInt(1, tamano-1), random.nextInt(1, tamano-1));
                     xInicial = posicionInicial.getX();
                     yInicial = posicionInicial.getY();
-
-                    if(bucletries<=0){
-                        invalidFormation = true;
-                       estaEnMismaFilaOColumna = false;
+                    if(esHorizontal && !xOcupadas.contains(xInicial)){
+                        System.out.println("x: " +  xInicial);
+                        System.out.println("xOcupadas: " +  xOcupadas);
+                        estaEnMismaFilaOColumna = false;
                     }
-                    bucletries--;
+                    if(!esHorizontal && !yOcupadas.contains(yInicial)){
+                        System.out.println("y: " + yInicial);
+                        System.out.println("yOcupadas: " + yOcupadas);
+                        estaEnMismaFilaOColumna = false;
+                    }
+
+
                 } while (estaEnMismaFilaOColumna);
             }
 
@@ -139,8 +123,8 @@ public class Modelo {
 
 
 
-            if (esVertical) {
-                carretera.setDireccion(Direccion.VERTICAL);
+            if (esHorizontal) {
+                carretera.setDireccion(Direccion.HORIZONTAL);
                 xFinal = xInicial;
 
                 if(yInicial>longitudCarretera){
@@ -153,12 +137,15 @@ public class Modelo {
                     yFinal = tamano-1;
                 }
 
-                yOcupadas.add(yInicial);
-                yOcupadas.add(yInicial+1);
-                yOcupadas.add(yInicial-1);
+
+                xOcupadas.add(xInicial);
+                xOcupadas.add(xInicial+1);
+                xOcupadas.add(xInicial-1);
+
+
             } else {
 
-                carretera.setDireccion(Direccion.HORIZONTAL);
+                carretera.setDireccion(Direccion.VERTICAL);
                 yFinal = yInicial;
                 if(xInicial>longitudCarretera){
                     xFinal = xInicial - longitudCarretera ;
@@ -170,10 +157,10 @@ public class Modelo {
                 if (xFinal>= tamano){
                     xFinal = tamano-1;
                 }
+                yOcupadas.add(yInicial);
+                yOcupadas.add(yInicial+1);
+                yOcupadas.add(yInicial-1);
 
-                xOcupadas.add(xInicial);
-                xOcupadas.add(xInicial+1);
-                xOcupadas.add(xInicial-1);
             }
 
             carreteras.add(carretera);
@@ -214,9 +201,12 @@ public class Modelo {
             if (entry.getValue() > 1) {
 
                 cruces.add(new Cruce(entry.getKey()));
+
             }
         }
-
+        if(cruces.size()<tamano/2){
+            invalidFormation = true;
+        }
 
     }
 
